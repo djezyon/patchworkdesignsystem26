@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="components/fig-tokens.css">
+</helmet>
+<div class="pw-root {{ themeClass }}" style="display:flex; min-height:100vh; background:var(--patch-color-surface-primary); color:var(--patch-color-text-primary); font-family:var(--patch-font-body);">
+
+  <aside style="position:sticky; top:0; align-self:flex-start; height:100vh; width:240px; flex:none; border-right:1px solid var(--patch-color-border-primary); background:var(--patch-color-surface-primary-lowest); padding:24px 0; overflow-y:auto;">
+    <div style="padding:0 24px 20px; display:flex; align-items:center; gap:10px;">
+      <div style="width:28px; height:28px; border-radius:6px; background:var(--patch-color-fill-accent-primary); display:flex; align-items:center; justify-content:center; color:var(--patch-color-text-on-accent-primary); font-weight:600; font-family:var(--patch-font-display);">P</div>
+      <div>
+        <div class="patch-body-s-600" style="line-height:16px;">Patchwork</div>
+        <div class="patch-caption-m-400" style="color:var(--patch-color-text-secondary);">Design System</div>
+      </div>
+    </div>
+    <nav style="display:flex; flex-direction:column; gap:2px; padding:0 12px;">
+      <sc-for list="{{ nav }}" as="item" hint-placeholder-count="11">
+        <button type="button" onClick="{{ item.go }}" class="patch-body-s-500" style="{{ item.style }}">{{ item.label }}</button>
+      </sc-for>
+    </nav>
+  </aside>
+
+  <div style="flex:1; min-width:0; display:flex; flex-direction:column;">
+    <header style="position:sticky; top:0; z-index:5; display:flex; align-items:center; justify-content:space-between; padding:18px 40px; border-bottom:1px solid var(--patch-color-border-primary); background:var(--patch-color-surface-primary-lowest);">
+      <div class="patch-display-xs">{{ activeLabel }}</div>
+      <button type="button" onClick="{{ toggleTheme }}" class="patch-body-s-500" style="display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:9999px; border:1px solid var(--patch-color-border-primary); background:var(--patch-color-surface-primary); color:var(--patch-color-text-primary); cursor:pointer;">{{ themeLabel }}</button>
+    </header>
+
+    <main style="padding:40px; max-width:1200px;">
+
+      <!-- OVERVIEW -->
+      <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:32px;">
+          <p class="patch-body-l" style="max-width:680px; color:var(--patch-color-text-secondary); margin:0;">Patchwork is Cricut's cross-platform design system. This reference shows the foundations and components extracted from the source Figma library — tokens, type, color, iconography, and component sets spanning Desktop, iOS, Android and generic Mobile.</p>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+            <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+              <div style="padding:20px; border-radius:8px; border:1px solid var(--patch-color-border-primary); background:var(--patch-color-surface-primary-lowest);">
+                <div class="patch-display-m" style="color:var(--patch-color-text-accent-primary);">{{ s.value }}</div>
+                <div class="patch-body-s-400" style="color:var(--patch-color-text-secondary); margin-top:4px;">{{ s.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex; gap:24px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:240px; padding:24px; border-radius:8px; border:1px solid var(--patch-color-border-primary);">
+              <div class="patch-body-xs-600" style="text-transform:uppercase; letter-spacing:0.06em; color:var(--patch-color-text-secondary); margin-bottom:12px;">Display / Headings</div>
+              <div class="patch-display-l" style="font-family:var(--patch-font-display);">Euclid Circular B</div>
+            </div>
+            <div style="flex:1; min-width:240px; padding:24px; border-radius:8px; border:1px solid var(--patch-color-border-primary);">
+              <div class="patch-body-xs-600" style="text-transform:uppercase; letter-spacing:0.06em; color:var(--patch-color-text-secondary); margin-bottom:12px;">Body / UI</div>
+              <div class="patch-display-l">Graphik</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- COLOR -->
+      <sc-if value="{{ isColor }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:40px;">
+          <sc-for list="{{ colorGroups }}" as="grp" hint-placeholder-count="3">
+            <section>
+              <div class="patch-body-m-600" style="margin-bottom:4px;">{{ grp.title }}</div>
+              <div class="patch-body-s-400" style="color:var(--patch-color-text-secondary); margin-bottom:16px;">{{ grp.desc }}</div>
+              <div style="display:flex; flex-wrap:wrap; gap:16px;">
+                <sc-for list="{{ grp.rows }}" as="row" hint-placeholder-count="6">
+                  <div style="width:120px;">
+                    <div style="height:64px; border-radius:8px; border:1px solid var(--patch-color-border-secondary); background:{{ row.bg }};"></div>
+                    <div class="patch-caption-m-600" style="margin-top:8px;">{{ row.label }}</div>
+                    <div class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono); font-size:10px;">{{ row.token }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </section>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- TYPOGRAPHY -->
+      <sc-if value="{{ isType }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div class="patch-body-m-600" style="margin-bottom:8px;">Display — Euclid Circular B Medium</div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:14px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-display-xl" style="flex:1;">Display XL</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">44 / 48</span></div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:14px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-display-l" style="flex:1;">Display L</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">36 / 42</span></div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:14px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-display-m" style="flex:1;">Display M</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">30 / 36</span></div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:14px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-display-s" style="flex:1;">Display S</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">24 / 28</span></div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:14px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-display-xs" style="flex:1;">Display XS</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">20 / 24</span></div>
+
+          <div class="patch-body-m-600" style="margin:24px 0 8px;">Body — Graphik (400 / 500 / 600)</div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:12px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-body-xl" style="flex:1;">Body XL — the quick brown fox</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">22 / 28</span></div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:12px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-body-l" style="flex:1;">Body L — the quick brown fox</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">20 / 28</span></div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:12px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-body-m-500" style="flex:1;">Body M — the quick brown fox jumps</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">16 / 24</span></div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:12px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-body-s-500" style="flex:1;">Body S — the quick brown fox jumps over</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">14 / 20</span></div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:12px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-body-xs-500" style="flex:1;">Body XS — the quick brown fox jumps over the lazy dog</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">12 / 16</span></div>
+
+          <div class="patch-body-m-600" style="margin:24px 0 8px;">Caption — Graphik</div>
+          <div style="border-bottom:1px solid var(--patch-color-border-secondary); padding:12px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-caption-m-500" style="flex:1;">Caption M — used for metadata and labels</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">12 / 16</span></div>
+          <div style="padding:12px 0; display:flex; align-items:baseline; gap:24px;"><span class="patch-caption-s-500" style="flex:1;">CAPTION S — ICON LABELS ONLY</span><span class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); font-family:var(--patch-font-mono);">10 / 16</span></div>
+        </div>
+      </sc-if>
+
+      <!-- SPACING -->
+      <sc-if value="{{ isSpacing }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:40px;">
+          <section>
+            <div class="patch-body-m-600" style="margin-bottom:16px;">Spacing scale</div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <sc-for list="{{ spacers }}" as="sp" hint-placeholder-count="8">
+                <div style="display:flex; align-items:center; gap:16px;">
+                  <div class="patch-caption-m-400" style="width:120px; font-family:var(--patch-font-mono); color:var(--patch-color-text-secondary);">{{ sp.token }}</div>
+                  <div style="height:16px; border-radius:3px; background:var(--patch-color-fill-accent-primary); width:{{ sp.width }};"></div>
+                  <div class="patch-caption-m-500">{{ sp.px }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+          <section>
+            <div class="patch-body-m-600" style="margin-bottom:16px;">Radius</div>
+            <div style="display:flex; gap:24px; flex-wrap:wrap;">
+              <sc-for list="{{ radii }}" as="r" hint-placeholder-count="4">
+                <div style="text-align:center;">
+                  <div style="width:88px; height:88px; background:var(--patch-color-surface-accent-primary); border:1px solid var(--patch-color-border-accent-primary); border-radius:{{ r.value }};"></div>
+                  <div class="patch-caption-m-600" style="margin-top:8px;">{{ r.label }}</div>
+                  <div class="patch-caption-m-400" style="color:var(--patch-color-text-secondary);">{{ r.px }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+        </div>
+      </sc-if>
+
+      <!-- ELEVATION -->
+      <sc-if value="{{ isElevation }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; gap:32px; flex-wrap:wrap;">
+          <sc-for list="{{ elevations }}" as="e" hint-placeholder-count="4">
+            <div style="text-align:center;">
+              <div style="width:160px; height:120px; border-radius:8px; background:var(--patch-color-surface-primary-lowest); box-shadow:{{ e.shadow }};"></div>
+              <div class="patch-body-s-600" style="margin-top:16px;">{{ e.label }}</div>
+              <div class="patch-caption-m-400" style="color:var(--patch-color-text-secondary); max-width:160px;">{{ e.use }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ICONS -->
+      <sc-if value="{{ isIcons }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div class="patch-body-s-400" style="color:var(--patch-color-text-secondary); margin-bottom:20px;">{{ iconCountLabel }}</div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(104px,1fr)); gap:8px;">
+            <sc-for list="{{ iconEls }}" as="ic" hint-placeholder-count="24">
+              <div title="{{ ic.name }}" style="display:flex; flex-direction:column; align-items:center; gap:8px; padding:16px 8px; border-radius:8px; border:1px solid var(--patch-color-border-secondary); background:var(--patch-color-surface-primary-lowest);">
+                <div style="color:var(--patch-color-text-primary); height:24px; display:flex; align-items:center;">{{ ic.el }}</div>
+                <div class="patch-caption-s-400" style="color:var(--patch-color-text-secondary); text-align:center; word-break:break-word; line-height:12px;">{{ ic.short }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- COMPONENT CATEGORIES -->
+      <sc-if value="{{ isAction }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:28px;">
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Button</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Button2" from="./components/action/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">FAB</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="FAB" from="./components/action/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Icon Button</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="IconButton2" from="./components/action/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Link Button</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="LinkButton" from="./components/action/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Segmented Button</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="SegmentedButton" from="./components/action/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isInput }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:28px;">
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Input</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Input" from="./components/input/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Stepper</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Stepper" from="./components/input/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isSelection }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:28px;">
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Chip / Pill</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="ChipAkaPill" from="./components/selection/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Controls / Toggles</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="ControlsAkaToggles" from="./components/selection/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Menu</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Menu" from="./components/selection/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Select List</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="SelectList" from="./components/selection/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Select</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Select" from="./components/selection/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Slider</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Slider" from="./components/selection/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Swatch</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Swatch" from="./components/selection/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Token</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Token" from="./components/selection/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isNavigation }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:28px;">
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Page Control</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="PageControl" from="./components/navigation/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Paginated Carousel</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="PaginatedCarousel" from="./components/navigation/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Search</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Search" from="./components/navigation/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Tab</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Tab" from="./components/navigation/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isCommunication }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:28px;">
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Badge</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Badge2" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Banner</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Banner" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Dialog</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Dialog" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Hotspot</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Hotspot2" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Progress Indicator</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="ProgressIndicator" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Skeleton</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Skeleton" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Snackbar</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Snackbar" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Tag</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Tag" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Title</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Title" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Tooltip</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Tooltip" from="./components/communication/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isContainment }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:28px;">
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Action Sheet</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="ActionSheet" from="./components/containment/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Divider</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Divider" from="./components/containment/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">List</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="List" from="./components/containment/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Popover</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Popover" from="./components/containment/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+          <div>
+            <div class="patch-body-s-600" style="margin-bottom:10px;">Sheet</div>
+            <div style="overflow:auto; border:1px solid var(--patch-color-border-primary); border-radius:8px; background:#f5f5f5; max-height:640px;">
+              <x-import component-from-global-scope="Sheet" from="./components/containment/Components.bundle.js" hint-size="1200px,800px"></x-import>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { section: "overview", theme: "light", icons: null };
+
+  componentDidMount() {
+    import("./components/icons/icon-data.js")
+      .then((m) => this.setState({ icons: m.default || m }))
+      .catch((e) => console.warn("icon load failed", e));
+  }
+
+  navDef() {
+    return [
+      { id: "overview", label: "Overview" },
+      { id: "color", label: "Color" },
+      { id: "type", label: "Typography" },
+      { id: "spacing", label: "Spacing & Radius" },
+      { id: "elevation", label: "Elevation" },
+      { id: "icons", label: "Iconography" },
+      { id: "action", label: "Action" },
+      { id: "input", label: "Input" },
+      { id: "selection", label: "Selection" },
+      { id: "navigation", label: "Navigation" },
+      { id: "communication", label: "Communication" },
+      { id: "containment", label: "Containment" },
+    ];
+  }
+
+  colorGroupsDef() {
+    const scale = (name, prefix, keys) => ({
+      title: name,
+      desc: prefix,
+      rows: keys.map((k) => ({ label: String(k), token: `${prefix}-${k}`, bg: `var(--${prefix}-${k})` })),
+    });
+    const num = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+    const gray = [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 850, 900];
+    const brand = (style, hues) => ({
+      title: `Brand · ${style}`,
+      desc: `brand-color-${style.toLowerCase()}`,
+      rows: hues.map((h) => ({ label: h, token: `brand-color-${style.toLowerCase()}-${h}`, bg: `var(--brand-color-${style.toLowerCase()}-${h})` })),
+    });
+    const semantic = (title, names) => ({
+      title,
+      desc: "semantic",
+      rows: names.map((n) => ({ label: n.replace("patch-color-", ""), token: n, bg: `var(--${n})` })),
+    });
+    return [
+      scale("Gray", "patch-color-gray", gray),
+      scale("Green (primary)", "patch-color-green", num),
+      scale("Purple (secondary)", "patch-color-purple", num),
+      scale("Yellow (tertiary)", "patch-color-yellow", [50, 300, 400, 600, 800, 900]),
+      scale("Red (error)", "patch-color-red", num),
+      scale("Orange (warning)", "patch-color-orange", num),
+      scale("Blue (info)", "patch-color-blue", num),
+      scale("Dark Blue", "patch-color-darkblue", num),
+      scale("Blue Gray", "patch-color-bluegray", num),
+      scale("Blue Green", "patch-color-bluegreen", num),
+      brand("Bold", ["aqua", "corn", "cricut-green", "ocean", "orange", "orchid", "salmon", "stone"]),
+      brand("Accessible", ["aqua", "corn", "cricut-green", "ocean", "orange", "orchid", "salmon", "stone"]),
+      brand("Light", ["blush", "fog", "lavender", "mint", "peach", "sand", "shamrock", "sky"]),
+      brand("Rich", ["black", "chocolate", "forest", "gingerbread", "indigo", "maroon", "plum", "teal"]),
+      semantic("Surface", ["patch-color-surface-primary", "patch-color-surface-primary-lowest", "patch-color-surface-primary-highest", "patch-color-surface-inverse", "patch-color-surface-accent-primary", "patch-color-surface-error", "patch-color-surface-warning", "patch-color-surface-info"]),
+      semantic("Text", ["patch-color-text-primary", "patch-color-text-secondary", "patch-color-text-label", "patch-color-text-placeholder", "patch-color-text-accent-primary", "patch-color-text-error", "patch-color-text-warning", "patch-color-text-info"]),
+      semantic("Border & Fill", ["patch-color-border-primary", "patch-color-border-secondary", "patch-color-border-accent-primary", "patch-color-fill-accent-primary", "patch-color-fill-accent-secondary", "patch-color-fill-error", "patch-color-fill-accent-tertiary", "patch-color-scrim"]),
+    ];
+  }
+
+  spacersDef() {
+    const vals = [0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104];
+    return vals.map((v) => ({ token: `spacer-${v}`, px: `${v}px`, width: `${v}px` }));
+  }
+
+  radiiDef() {
+    return [
+      { label: "none", px: "0", value: "0" },
+      { label: "small", px: "4px", value: "4px" },
+      { label: "medium", px: "8px", value: "8px" },
+      { label: "x-large", px: "16px", value: "16px" },
+      { label: "full", px: "9999", value: "9999px" },
+    ];
+  }
+
+  elevationsDef() {
+    return [
+      { label: "elevation/1", use: "Resting cards & surfaces", shadow: "0px 1px 3px 0px rgba(18,18,18,0.2)" },
+      { label: "elevation/2", use: "Drawers & raised panels", shadow: "0px 4px 8px 0px rgba(18,18,18,0.16)" },
+      { label: "elevation/3", use: "Menus & popovers", shadow: "0px 6px 14px 0px rgba(18,18,18,0.18)" },
+      { label: "elevation/4", use: "Modals & dialogs", shadow: "0px 10px 20px 0px rgba(18,18,18,0.2)" },
+    ];
+  }
+
+  renderVals() {
+    const section = this.state.section;
+    const dark = this.state.theme === "dark";
+    const nav = this.navDef().map((n) => {
+      const active = n.id === section;
+      return {
+        label: n.label,
+        go: () => this.setState({ section: n.id }),
+        style: [
+          "text-align:left",
+          "padding:9px 12px",
+          "border-radius:8px",
+          "border:none",
+          "cursor:pointer",
+          "background:" + (active ? "var(--patch-color-surface-accent-primary)" : "transparent"),
+          "color:" + (active ? "var(--patch-color-text-accent-primary)" : "var(--patch-color-text-secondary)"),
+        ].join(";"),
+      };
+    });
+
+    const icons = this.state.icons;
+    let iconEls = [];
+    let iconCountLabel = "Loading icons…";
+    if (icons) {
+      const names = Object.keys(icons).filter((n) => n.endsWith("Size24") && n.startsWith("Icon"));
+      iconCountLabel = names.length + " glyphs (24px) · " + Object.keys(icons).length + " total entries across all sizes";
+      iconEls = names.map((name) => {
+        const d = icons[name];
+        const short = name.replace(/^Icon/, "").replace(/Size24$/, "");
+        return {
+          name,
+          short,
+          el: React.createElement("svg", {
+            width: 24, height: 24, viewBox: d.viewBox, fill: "none",
+            dangerouslySetInnerHTML: { __html: d.body },
+          }),
+        };
+      });
+    }
+
+    const activeLabel = (this.navDef().find((n) => n.id === section) || {}).label || "";
+
+    return {
+      nav,
+      activeLabel,
+      themeClass: dark ? "dark" : "",
+      themeLabel: dark ? "◐ Dark" : "◑ Light",
+      toggleTheme: () => this.setState({ theme: dark ? "light" : "dark" }),
+      isOverview: section === "overview",
+      isColor: section === "color",
+      isType: section === "type",
+      isSpacing: section === "spacing",
+      isElevation: section === "elevation",
+      isIcons: section === "icons",
+      isAction: section === "action",
+      isInput: section === "input",
+      isSelection: section === "selection",
+      isNavigation: section === "navigation",
+      isCommunication: section === "communication",
+      isContainment: section === "containment",
+      stats: [
+        { value: "285", label: "Design tokens" },
+        { value: "709", label: "Component families" },
+        { value: "368", label: "Icon glyphs" },
+        { value: "4", label: "Platforms" },
+      ],
+      colorGroups: this.colorGroupsDef(),
+      spacers: this.spacersDef(),
+      radii: this.radiiDef(),
+      elevations: this.elevationsDef(),
+      iconEls,
+      iconCountLabel,
+    };
+  }
+}
+</script>
+</body>
+</html>

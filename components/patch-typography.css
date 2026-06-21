@@ -1,0 +1,37 @@
+/* Patchwork typography — 2023 current scale.
+   Display = Euclid Circular B (Medium). Body/Caption = Graphik.
+   Mono = Roboto Mono. Fallback stacks used since Graphik/Euclid are licensed. */
+
+:root {
+  --patch-font-display: "Euclid Circular B", "Graphik", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --patch-font-body: "Graphik", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --patch-font-mono: "Roboto Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Display — Euclid Circular B Medium */
+.patch-display-xl { font-family: var(--patch-font-display); font-weight: 500; font-size: 44px; line-height: 48px; letter-spacing: -0.01em; }
+.patch-display-l  { font-family: var(--patch-font-display); font-weight: 500; font-size: 36px; line-height: 42px; letter-spacing: -0.01em; }
+.patch-display-m  { font-family: var(--patch-font-display); font-weight: 500; font-size: 30px; line-height: 36px; }
+.patch-display-s  { font-family: var(--patch-font-display); font-weight: 500; font-size: 24px; line-height: 28px; }
+.patch-display-xs { font-family: var(--patch-font-display); font-weight: 500; font-size: 20px; line-height: 24px; }
+
+/* Body — Graphik, weights 400 / 500 / 600 */
+.patch-body-xl     { font-family: var(--patch-font-body); font-weight: 400; font-size: 22px; line-height: 28px; }
+.patch-body-l      { font-family: var(--patch-font-body); font-weight: 400; font-size: 20px; line-height: 28px; }
+.patch-body-m-400  { font-family: var(--patch-font-body); font-weight: 400; font-size: 16px; line-height: 24px; }
+.patch-body-m-500  { font-family: var(--patch-font-body); font-weight: 500; font-size: 16px; line-height: 24px; }
+.patch-body-m-600  { font-family: var(--patch-font-body); font-weight: 600; font-size: 16px; line-height: 24px; }
+.patch-body-s-400  { font-family: var(--patch-font-body); font-weight: 400; font-size: 14px; line-height: 20px; }
+.patch-body-s-500  { font-family: var(--patch-font-body); font-weight: 500; font-size: 14px; line-height: 20px; }
+.patch-body-s-600  { font-family: var(--patch-font-body); font-weight: 600; font-size: 14px; line-height: 20px; }
+.patch-body-xs-400 { font-family: var(--patch-font-body); font-weight: 400; font-size: 12px; line-height: 16px; }
+.patch-body-xs-500 { font-family: var(--patch-font-body); font-weight: 500; font-size: 12px; line-height: 16px; }
+.patch-body-xs-600 { font-family: var(--patch-font-body); font-weight: 600; font-size: 12px; line-height: 16px; }
+
+/* Caption — Graphik */
+.patch-caption-m-400 { font-family: var(--patch-font-body); font-weight: 400; font-size: 12px; line-height: 16px; }
+.patch-caption-m-500 { font-family: var(--patch-font-body); font-weight: 500; font-size: 12px; line-height: 16px; }
+.patch-caption-m-600 { font-family: var(--patch-font-body); font-weight: 600; font-size: 12px; line-height: 16px; }
+.patch-caption-s-400 { font-family: var(--patch-font-body); font-weight: 400; font-size: 10px; line-height: 16px; }
+.patch-caption-s-500 { font-family: var(--patch-font-body); font-weight: 500; font-size: 10px; line-height: 16px; }
+.patch-caption-s-600 { font-family: var(--patch-font-body); font-weight: 600; font-size: 10px; line-height: 16px; }

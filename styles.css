@@ -1,0 +1,17 @@
+/* Patchwork design system — global stylesheet.
+   Cricut "Patchwork" reference, extracted from Figma. */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
+
+@import './components/fig-tokens.css';
+@import './components/patch-typography.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--patch-font-body);
+  color: var(--patch-color-text-primary);
+  background: var(--patch-color-surface-primary);
+  -webkit-font-smoothing: antialiased;
+}
