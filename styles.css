@@ -15,3 +15,14 @@ body {
   background: var(--patch-color-surface-primary);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Patchwork: vertically center List component in accessibility preview */
+.pw-root .List,
+.pw-root [class*="List"],
+.pw-root [role="list"] {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: stretch;
+  min-height: 100%;
+}
